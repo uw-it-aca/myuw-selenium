@@ -52,3 +52,12 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# virtualenv/django
+/bin/
+/include/
+/local/
+/project/
+/manage.py
+db.sqlite3
+/src/
