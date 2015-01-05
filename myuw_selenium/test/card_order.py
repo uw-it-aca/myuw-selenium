@@ -11,6 +11,8 @@ class CardOrderTest(SeleniumLiveServerTestCase):
 
         dates = [
             { 'date': "2013-04-01", 'user': 'javerage' },
+            { 'date': "2013-04-02", 'user': 'javerage' }, # Same!
+            { 'date': "2013-04-03", 'user': 'javerage' }, # Future quarter moves to position 1
             { 'date': "2013-04-25", 'user': 'javerage' }, # Same!
             { 'date': "2013-04-26", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
             { 'date': "2013-05-30", 'user': 'none' }, # Same!
@@ -29,24 +31,27 @@ class CardOrderTest(SeleniumLiveServerTestCase):
         correct_cards = [
             [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
             [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', u'FutureQuarterCard1'],
-            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', u'FutureQuarterCard1'],
-            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', u'FutureQuarterCard1'],
-            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', u'FutureQuarterCard1'],
-            [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'GradeCard', u'FinalExamCard', u'FutureQuarterCardA', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'GradeCard', u'FinalExamCard', u'FutureQuarterCardA', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'GradeCard', u'FutureQuarterCardA', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'GradeCard', u'FutureQuarterCardA', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'GradeCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', u'FutureQuarterCard1'],
-            [u'GradeCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', u'FutureQuarterCard1'],
-            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', u'FutureQuarterCard1'],
+            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
+            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
+            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
+            [u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
+            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+            [u'GradeCard', u'FinalExamCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+            [u'GradeCard', u'FinalExamCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+            [u'GradeCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+            [u'GradeCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+            [u'GradeCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'],
+            [u'GradeCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'],
+            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'],
         ]
 
         index = 0
         for val in dates:
             date = val["date"]
             user = val["user"]
+
             self.driver.get(self.live_server_url + '/users/')
             element = self.driver.find_element_by_xpath("//input[@name='override_as']")
             element.clear()
@@ -72,7 +77,10 @@ class CardOrderTest(SeleniumLiveServerTestCase):
                     displayed.append(div.get_attribute("id"))
 
             cards = correct_cards[index]
+
+            self.assertEquals(len(cards), len(displayed), "Set %s has right number of cards (%s, %s)" % (index, ",".join(cards), ",".join(displayed)))
+
             for i in range(0, len(cards)-1):
-                self.assertEquals(cards[i], displayed[i])
+                self.assertEquals(cards[i], displayed[i], "Set %s has correct card %s" % (index, i))
 
             index = index + 1
