@@ -10,14 +10,21 @@ class CardOrderTest(SeleniumLiveServerTestCase):
         from time import sleep
 
         dates = [
+            { 'date': "2013-04-07", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-08", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-21", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-22", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-25", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-26", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-29", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-05-30", 'user': 'none' }, # Same!
+            { 'date': "2013-03-10", 'user': 'none' }, # Need to go back in time, otherwise autumn makes this break - Same though
+            { 'date': "2013-03-11", 'user': 'none' }, # Need to go back in time, otherwise autumn makes this break
             { 'date': "2013-04-01", 'user': 'javerage' },
             { 'date': "2013-04-02", 'user': 'javerage' }, # Same!
             { 'date': "2013-04-03", 'user': 'javerage' }, # Future quarter moves to position 1
             { 'date': "2013-04-25", 'user': 'javerage' }, # Same!
-            { 'date': "2013-04-26", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
-            { 'date': "2013-05-30", 'user': 'none' }, # Same!
-            { 'date': "2013-03-10", 'user': 'none' }, # Need to go back in time, otherwise autumn makes this break - Same though
-            { 'date': "2013-03-11", 'user': 'none' }, # Need to go back in time, otherwise autumn makes this break
+
             { 'date': "2013-06-07", 'user': 'javerage' }, # Same (ish)!
             { 'date': "2013-06-08", 'user': 'javerage' },
             { 'date': "2013-06-13", 'user': 'javerage' }, # Same!
@@ -29,14 +36,22 @@ class CardOrderTest(SeleniumLiveServerTestCase):
         ]
 
         correct_cards = [
-            [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
+            [u'VisualScheduleCard', u'CourseCard', u'TuitionCard'], #  'date': "2013-04-07", 'user': 'none'
+            [u'SummerRegStatusCardA', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
+            [u'SummerRegStatusCardA', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
+            [u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'],
+            [u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'],
+            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'],
+            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'], #  'date': "2013-04-29", 'user': 'none'
             [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
             [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
             [u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
+
+            [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
+            [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
+            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
+
             [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
             [u'GradeCard', u'FinalExamCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
             [u'GradeCard', u'FinalExamCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
