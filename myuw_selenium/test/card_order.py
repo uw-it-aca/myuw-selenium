@@ -10,56 +10,29 @@ class CardOrderTest(SeleniumLiveServerTestCase):
         from time import sleep
 
         dates = [
-            { 'date': "2013-04-07", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
-            { 'date': "2013-04-08", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
-            { 'date': "2013-04-21", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
-            { 'date': "2013-04-22", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
-            { 'date': "2013-04-25", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
-            { 'date': "2013-04-26", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
-            { 'date': "2013-04-29", 'user': 'none' }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
-            { 'date': "2013-05-30", 'user': 'none' }, # Same!
-            { 'date': "2013-03-10", 'user': 'none' }, # Need to go back in time, otherwise autumn makes this break - Same though
-            { 'date': "2013-03-11", 'user': 'none' }, # Need to go back in time, otherwise autumn makes this break
-            { 'date': "2013-04-01", 'user': 'javerage' },
-            { 'date': "2013-04-02", 'user': 'javerage' }, # Same!
-            { 'date': "2013-04-03", 'user': 'javerage' }, # Future quarter moves to position 1
-            { 'date': "2013-04-25", 'user': 'javerage' }, # Same!
+            { 'date': "2013-04-07", 'user': 'none', 'cards': [u'VisualScheduleCard', u'CourseCard', u'TuitionCard'] }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-08", 'user': 'none', 'cards': [u'SummerRegStatusCardA', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'] }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-21", 'user': 'none', 'cards': [u'SummerRegStatusCardA', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'] }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-22", 'user': 'none', 'cards': [u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'] }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-25", 'user': 'none', 'cards': [u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'] }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-26", 'user': 'none', 'cards': [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'] }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-04-29", 'user': 'none', 'cards': [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'] }, # Needs to be none to have no registrations, otherwise RegStatusCard is hidden
+            { 'date': "2013-05-30", 'user': 'none', 'cards': [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'] }, # Same!
+            { 'date': "2013-03-10", 'user': 'none', 'cards': [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'] }, # Need to go back in time, otherwise autumn makes this break - Same though
+            { 'date': "2013-03-11", 'user': 'none', 'cards': [u'VisualScheduleCard', u'CourseCard', u'TuitionCard'] }, # Need to go back in time, otherwise autumn makes this break
+            { 'date': "2013-04-01", 'user': 'javerage', 'cards': [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'] },
+            { 'date': "2013-04-02", 'user': 'javerage', 'cards': [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'] }, # Same!
+            { 'date': "2013-04-03", 'user': 'javerage', 'cards': [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'] }, # Future quarter moves to position 1
+            { 'date': "2013-04-25", 'user': 'javerage', 'cards': [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'] }, # Same!
 
-            { 'date': "2013-06-07", 'user': 'javerage' }, # Same (ish)!
-            { 'date': "2013-06-08", 'user': 'javerage' },
-            { 'date': "2013-06-13", 'user': 'javerage' }, # Same!
-            { 'date': "2013-06-15", 'user': 'javerage' },
-            { 'date': "2013-08-27", 'user': 'javerage' }, # Need to go to the future - spring's grade submission deadline is always today actual.
-            { 'date': "2013-08-28", 'user': 'javerage' }, # Need to go to the future - spring's grade submission deadline is always today actual.
-            { 'date': "2013-09-24", 'user': 'javerage' }, # Same
-            { 'date': "2013-09-25", 'user': 'javerage' },
-        ]
-
-        correct_cards = [
-            [u'VisualScheduleCard', u'CourseCard', u'TuitionCard'], #  'date': "2013-04-07", 'user': 'none'
-            [u'SummerRegStatusCardA', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
-            [u'SummerRegStatusCardA', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
-            [u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'],
-            [u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'],
-            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'],
-            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard', u'SummerRegStatusCard1'], #  'date': "2013-04-29", 'user': 'none'
-            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
-            [u'RegStatusCard', u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
-            [u'VisualScheduleCard', u'CourseCard', u'TuitionCard'],
-
-            [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'FutureQuarterCardA', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard'],
-            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-
-            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-            [u'GradeCard', u'FinalExamCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-            [u'GradeCard', u'FinalExamCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-            [u'GradeCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-            [u'GradeCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'],
-            [u'GradeCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'],
-            [u'GradeCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'],
-            [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'],
+            { 'date': "2013-06-07", 'user': 'javerage', 'cards': [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'] }, # Same (ish)!
+            { 'date': "2013-06-08", 'user': 'javerage', 'cards': [u'FinalExamCard', u'GradeCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'] },
+            { 'date': "2013-06-13", 'user': 'javerage', 'cards': [u'FinalExamCard', u'GradeCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'] }, # Same!
+            { 'date': "2013-06-15", 'user': 'javerage', 'cards': [u'GradeCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'] },
+            { 'date': "2013-08-27", 'user': 'javerage', 'cards': [u'GradeCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard', u'AcademicCard', 'FutureQuarterCard1'] }, # Need to go to the future - spring's grade submission deadline is always today actual.
+            { 'date': "2013-08-28", 'user': 'javerage', 'cards': [u'GradeCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'] }, # Need to go to the future - spring's grade submission deadline is always today actual.
+            { 'date': "2013-09-24", 'user': 'javerage', 'cards': [u'GradeCard', u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'] }, # Same
+            { 'date': "2013-09-25", 'user': 'javerage', 'cards': [u'VisualScheduleCard', u'CourseCard', u'HFSCard', u'TuitionCard', u'LibraryCard'] },
         ]
 
         index = 0
@@ -91,9 +64,9 @@ class CardOrderTest(SeleniumLiveServerTestCase):
                 if div.get_attribute("style") != "display: none;":
                     displayed.append(div.get_attribute("id"))
 
-            cards = correct_cards[index]
+            cards = val['cards']
 
-            self.assertEquals(len(cards), len(displayed), "Set %s has right number of cards (%s, %s)" % (index, ",".join(cards), ",".join(displayed)))
+            self.assertEquals(len(cards), len(displayed), "Set %s has right number of cards (%s vs %s)" % (index, ",".join(cards), ",".join(displayed)))
 
             for i in range(0, len(cards)-1):
                 self.assertEquals(cards[i], displayed[i], "Set %s has correct card %s" % (index, i))
